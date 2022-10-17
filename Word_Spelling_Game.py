@@ -239,6 +239,9 @@ def playHand(hand, wordList, n):
         if calculateHandlen(hand) == 0:
             print('You used all of your letters!', end = ' ')
     print('Total score:', score,'points.')                 # Game is over (user entered a '.' or ran out of letters), so tell user the total score
+    print('Would you like to play again?')
+
+
 
 def playGame(wordList):
     """
@@ -254,6 +257,16 @@ def playGame(wordList):
     """
     gameCounter = 0
     gameOver = False
+    
+    # First Play Welcome
+    print('Welcome to the Word Spelling Game!')
+    print('Spell words with the letters in your hand to score points.')
+    print('Longer words and certain rare letters count for more points!')
+    
+    gameCounter += 1
+    hand = dealHand(HAND_SIZE)
+    playHand(hand, wordList, HAND_SIZE)
+    
     while gameOver == False:
         userInput = input('Enter n to deal a new hand, r to replay the last hand, or e to end game: ')
         if userInput == 'n':
@@ -268,6 +281,7 @@ def playGame(wordList):
             gameOver = True
         else:
             print('Invalid command.')
+        print()
 
 
 # Build data structures used for entire session and play game
