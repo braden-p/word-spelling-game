@@ -4,6 +4,7 @@ Created by Braden Piper, bradenpiper.com
 Created on Fri Oct 14, 2022
 Version = 1.1
 ------------------------------------------
+DESCRIPTION:
 A word spelling game similar to Scrabble. The program will provide the player with
 a specified number of letters. The player attempts to spell words using the provided
 letters, and each word is assigned a score. Each letter has its own score value,
@@ -13,6 +14,8 @@ Play continues until the player uses all of the letters, or they give up because
 they can no longer spell any words, and a final score is awarded.
 After the game is over, the player can opt to play again using the same set of
 letters, or a new set of letters.
+------------------------------------------
+The variable HAND_SIZE determines the number of letters dealt to the player.
 ------------------------------------------
 NOTE: This program was completed as part of the course MITx 6.00.1x - Introduction
 to Computer Science and Programming using Python. The general framework, and some
@@ -26,19 +29,13 @@ but the implementations are my own.
 """
 
 import random
-import string
 
 VOWELS = 'aeiou'
 CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
+# HAND_SIZE determines how many letters are dealt to a player 
 HAND_SIZE = 12
 
-SCRABBLE_LETTER_VALUES = {
-    'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10
-}
-
-# -----------------------------------
-# Helper code
-# (you don't need to understand this helper code)
+SCRABBLE_LETTER_VALUES = {'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10}
 
 WORDLIST_FILENAME = "words.txt"
 
@@ -74,13 +71,6 @@ def getFrequencyDict(sequence):
         freq[x] = freq.get(x,0) + 1
     return freq
 	
-
-# (end of helper code)
-# -----------------------------------
-
-#
-# Problem #1: Scoring a word
-#
 def getWordScore(word, n):
     """
     Returns the score for a word. Assumes the word is a valid word.
@@ -98,7 +88,7 @@ def getWordScore(word, n):
     """
     base_score = 0
     for letter in word: # iterate through each letter in the word
-        base_score += SCRABBLE_LETTER_VALUES[letter] # look up the value of the letter in the SCRABBLE_LETTER_VALUES dict, += the values to a variable called base_score
+        base_score += SCRABBLE_LETTER_VALUES[letter] # look up the value of the letter in the SCRABBLE_LETTER_VALUES dict, += the values to base_score
     score = base_score * len(word)   # multiply base_score times the length of the word and store in score
     if len(word) == n:   # if all letters were used, add 50 to score
         score += 50
@@ -106,10 +96,6 @@ def getWordScore(word, n):
     else:
         return score
 
-
-#
-# Problem #2: Make sure you understand how this function works and what it does!
-#
 def displayHand(hand):
     """
     Displays the letters currently in the hand.
@@ -125,11 +111,8 @@ def displayHand(hand):
     for letter in hand.keys():
         for j in range(hand[letter]):
              print(letter,end=" ")       # print all on the same line
-    print()                             # print an empty line
+    print()                              # print an empty line
 
-#
-# Problem #2: Make sure you understand how this function works and what it does!
-#
 def dealHand(n):
     """
     Returns a random hand containing n lowercase letters.
@@ -147,17 +130,11 @@ def dealHand(n):
     
     for i in range(numVowels):
         x = VOWELS[random.randrange(0,len(VOWELS))]
-        hand[x] = hand.get(x, 0) + 1
-        
+        hand[x] = hand.get(x, 0) + 1 
     for i in range(numVowels, n):    
         x = CONSONANTS[random.randrange(0,len(CONSONANTS))]
         hand[x] = hand.get(x, 0) + 1
-        
     return hand
-
-#
-# Problem #2: Update a hand by removing letters
-#
 
 def updateHand(hand, word):
     """
@@ -176,14 +153,9 @@ def updateHand(hand, word):
     returns: dictionary (string -> int)
     """
     tempHand = hand.copy()   # copy hand into a tempHand
-    for letter in word: # for each letter in word, update the corresponding value in tempHand to value-1
+    for letter in word:      # for each letter in word, update the corresponding value in tempHand to value-1
         tempHand[letter] -= 1
     return tempHand
-
-
-#
-# Problem #3: Test word validity
-#
 
 def isValidWord(word, hand, wordList):
     """
@@ -210,11 +182,6 @@ def isValidWord(word, hand, wordList):
         if value < 0:
             isValid = False
     return isValid
-            
-
-#
-# Problem #4: Playing a hand
-#
 
 def calculateHandlen(hand):
     """ 
@@ -228,7 +195,6 @@ def calculateHandlen(hand):
     for value in values:
         length += value
     return length
-    
 
 def playHand(hand, wordList, n):
     """
@@ -252,33 +218,27 @@ def playHand(hand, wordList, n):
       n: integer (HAND_SIZE; i.e., hand size required for additional points)
       
     """
-    # BEGIN PSEUDOCODE <-- Remove this comment when you code this function; do your coding within the pseudocode (leaving those comments in-place!)
-    score = 0  # Keep track of the total score
+    score = 0                               # Keep track of the total score
     
-    while calculateHandlen(hand) > 0: # As long as there are still letters left in the hand:
+    while calculateHandlen(hand) > 0:       # As long as there are still letters left in the hand:
         print('Current Hand: ', end = ' ')
-        displayHand(hand)   # Display the hand
+        displayHand(hand)                   # Display the hand
         word = input('Enter word, or a "." to indicate that you are finished: ')   # Ask user for input
-        if word == '.':   # If the input is a single period:
-            print('Goodbye!', end = ' ')
-            break   # End the game (break out of the loop)
-        else:   # Otherwise (the input is not a single period):
-            if not isValidWord(word, hand, wordList):   # If the word is not valid:
+        if word == '.':                        # If the input is a single period:
+            print('Game Over.', end = ' ')
+            break                              # End the game (break out of the loop)
+        else:                                  # Otherwise (the input is not a single period):
+            if not isValidWord(word, hand, wordList):      # If the word is not valid:
                 print('Invalid word, please try again.')   # Reject invalid word (print a message followed by a blank line)
                 print()
-            else:   # Otherwise (the word is valid):
+            else:                                          # Otherwise (the word is valid):
                 score += getWordScore(word,n)
                 print('"'+word+'"','earned',getWordScore(word,n),'points. Total:',score,'points')   # Tell the user how many points the word earned, and the updated total score, in one line followed by a blank line
                 print()
-                hand = updateHand(hand,word)   # Update the hand
+                hand = updateHand(hand,word)               # Update the hand
         if calculateHandlen(hand) == 0:
-            print('Run out of letters.', end = ' ')
-    print('Total score:', score,'points.')   # Game is over (user entered a '.' or ran out of letters), so tell user the total score
-    
-
-#
-# Problem #5: Playing a game
-# 
+            print('You used all of your letters!', end = ' ')
+    print('Total score:', score,'points.')                 # Game is over (user entered a '.' or ran out of letters), so tell user the total score
 
 def playGame(wordList):
     """
@@ -310,10 +270,7 @@ def playGame(wordList):
             print('Invalid command.')
 
 
-
-#
 # Build data structures used for entire session and play game
-#
 if __name__ == '__main__':
     wordList = loadWords()
     playGame(wordList)
