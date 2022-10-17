@@ -1,4 +1,4 @@
- Word Spelling Game
+# Word Spelling Game
 #### Created by Braden Piper, bradenpiper.com
 #### Created on Fri Oct 14, 2022
 #### Version = 1.1
